@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${dalPackageName}.mapper.${tableNickName}Mapper" >
+	<resultMap id="${tableNickName}Map" type="${dalPackageName}.model.${tableNickName}Model" >
+		<result column="id" property="id" />
+		<result column="gmt_create" property="gmtCreate" />
+		<result column="gmt_modified" property="gmtModified" />
+		${columnsAndProperties}
+	</resultMap>
+
+	<sql id="sql_select"  >
+		<![CDATA[
+			SELECT
+				id, gmt_create, gmt_modified, ${columns}
+			FROM ${tableRealName}
+		]]>
+	</sql>
+	
+	<sql id="sql_limit">
+		LIMIT #{pageSize} OFFSET #{startNum}
+	</sql>
+	
+	<sql id="sql_order">
+		<![CDATA[
+			ORDER BY id DESC
+		]]>
+	</sql>
+	
+	<sql id="sql_where">
+		WHERE 1=1
+		<if test="idList != null and idList.size() > 0">
+			AND id IN
+			<foreach collection="idList" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+		<if test="id != null"> AND id = #{id} </if>
+		<if test="gmtCreate != null"> AND gmt_create = #{gmtCreate} </if>
+		<if test="gmtModified != null"> AND gmt_modified = #{gmtModified} </if>
+		${sqlWhereStatements}
+	</sql>
+	
+	<select id="query" parameterType="${dalPackageName}.param.${tableNickName}Param" resultMap="${tableNickName}Map" >
+		<include refid="sql_select" />
+		<include refid="sql_where" />
+		<include refid="sql_order" />
+		<include refid="sql_limit" />
+	</select>
+
+	<select id="find" parameterType="java.lang.Long" resultMap="${tableNickName}Map" >
+		<include refid="sql_select" />
+		<![CDATA[
+			WHERE id = #{id}
+		]]>
+	</select>
+	
+	<select id="count" parameterType="${dalPackageName}.param.${tableNickName}Param" resultType="java.lang.Integer" >
+		SELECT COUNT(*) FROM ${tableRealName}
+		<include refid="sql_where" />
+	</select>
+	
+	<insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="${dalPackageName}.model.${tableNickName}Model" >
+		<![CDATA[
+			INSERT INTO ${tableRealName}(gmt_create, gmt_modified, ${columns})
+			VALUES(now(), now(), #{name}, #{email}, ${createStatements})
+		]]>
+	</insert>
+	
+	<insert id="batchCreate" useGeneratedKeys="true" keyProperty="id" parameterType="java.util.List" >
+		INSERT INTO ${tableRealName}(gmt_create, gmt_modified, ${columns})
+		VALUES
+		<foreach collection="list" index="index" item="item" separator=",">
+			(now(), now(), ${batchCreateStatements})
+		</foreach>
+	</insert>
+
+	<update id="update" parameterType="java.util.Map" >
+		UPDATE ${tableRealName}
+		SET gmt_modified = now()
+		${updateStatements}
+		WHERE
+			id = #{this.id}
+	</update>
+
+	<delete id="delete" parameterType="java.lang.Long" >
+		DELETE FROM ${tableRealName} WHERE id =#{id}
+	</delete>
+</mapper>

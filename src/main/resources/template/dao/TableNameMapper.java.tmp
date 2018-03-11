@@ -1,0 +1,9 @@
+package ${dalPackageName}.mapper;
+
+import ${basePackageName}.Mapper;
+import ${dalPackageName}.model.${tableNickName}Model;
+import ${dalPackageName}.param.${tableNickName}Param;
+
+public interface ${tableNickName}Mapper extends Mapper<${tableNickName}Param, ${tableNickName}Model> {
+
+}

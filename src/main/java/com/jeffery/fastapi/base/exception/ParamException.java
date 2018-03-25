@@ -1,4 +1,6 @@
-package com.jeffery.fastapi.exception;
+package com.jeffery.fastapi.base.exception;
+
+import com.jeffery.fastapi.base.ErrorType;
 
 public class ParamException extends ServiceException {
 
@@ -18,6 +20,11 @@ public class ParamException extends ServiceException {
 
 	public ParamException(Throwable cause) {
 		super(cause);
+	}
+
+	@Override
+	public ErrorType getErrorType() {
+		return ErrorType.PARAM_ERROR;
 	}
 
 }

@@ -1,4 +1,6 @@
-package com.jeffery.fastapi.exception;
+package com.jeffery.fastapi.base.exception;
+
+import com.jeffery.fastapi.base.ErrorType;
 
 public class AuthorityException extends ServiceException {
 
@@ -18,6 +20,11 @@ public class AuthorityException extends ServiceException {
 
 	public AuthorityException(Throwable cause) {
 		super(cause);
+	}
+
+	@Override
+	public ErrorType getErrorType() {
+		return ErrorType.AUTHORITY_ERROR;
 	}
 
 }

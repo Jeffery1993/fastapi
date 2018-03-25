@@ -1,4 +1,4 @@
-package com.jeffery.fastapi.util;
+package com.jeffery.fastapi.base.utils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

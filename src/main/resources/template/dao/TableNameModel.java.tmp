@@ -1,8 +1,8 @@
 package ${dalPackageName}.model;
 
-import ${basePackageName}.AbstractModel;
+import com.jeffery.fastapi.base.AbstractModel;
 
-public class ${tableNickName}Model extends AbstractModel {
+public class ${tableClassName}Model extends AbstractModel {
 
 	private static final long serialVersionUID = 1L;
 	

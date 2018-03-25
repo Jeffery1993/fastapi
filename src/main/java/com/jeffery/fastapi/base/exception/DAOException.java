@@ -1,4 +1,6 @@
-package com.jeffery.fastapi.exception;
+package com.jeffery.fastapi.base.exception;
+
+import com.jeffery.fastapi.base.ErrorType;
 
 public class DAOException extends ServiceException {
 
@@ -18,6 +20,11 @@ public class DAOException extends ServiceException {
 
 	public DAOException(Throwable cause) {
 		super(cause);
+	}
+
+	@Override
+	public ErrorType getErrorType() {
+		return ErrorType.SQL_ERROR;
 	}
 
 }

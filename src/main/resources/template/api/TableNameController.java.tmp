@@ -1,0 +1,103 @@
+package ${apiPackageName}.${tablePackageName}.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.jeffery.fastapi.base.AbstractController;
+import com.jeffery.fastapi.base.ErrorType;
+import com.jeffery.fastapi.base.PageList;
+import com.jeffery.fastapi.base.RestResult;
+import com.jeffery.fastapi.base.exception.ServiceException;
+import ${apiPackageName}.${tablePackageName}.model.${tableClassName}VO;
+import ${apiPackageName}.${tablePackageName}.service.${tableClassName}Service;
+import ${dalPackageName}.model.${tableClassName}Model;
+
+@RestController
+@RequestMapping("/api/v1")
+public class ${tableClassName}Controller extends AbstractController {
+
+	@Autowired
+	private ${tableClassName}Service ${tableObjectName}Service;
+
+	@RequestMapping(value = "/${tableObjectName}", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
+	public RestResult<String> create${tableClassName}(@RequestBody List<${tableClassName}Model> ${tableObjectName}ModelList) {
+		RestResult<String> res = new RestResult<String>();
+		try {
+			${tableObjectName}Service.create${tableClassName}(${tableObjectName}ModelList);
+			res.setState(true);
+		} catch (ServiceException e) {
+			logger.error(e.getMessage());
+			res.setErrorType(e.getErrorType());
+			res.setErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			res.setErrorType(ErrorType.UNKNOWN_ERROR);
+			res.setErrorMessage(e.getMessage());
+		}
+		return res;
+	}
+
+	@RequestMapping(value = "/${tableObjectName}", produces = "application/json; charset=utf-8", method = RequestMethod.PUT)
+	public RestResult<String> update${tableClassName}(@RequestBody List<${tableClassName}Model> ${tableObjectName}ModelList) {
+		RestResult<String> res = new RestResult<String>();
+		try {
+			${tableObjectName}Service.update${tableClassName}(${tableObjectName}ModelList);
+			res.setState(true);
+		} catch (ServiceException e) {
+			logger.error(e.getMessage());
+			res.setErrorType(e.getErrorType());
+			res.setErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			res.setErrorType(ErrorType.UNKNOWN_ERROR);
+			res.setErrorMessage(e.getMessage());
+		}
+		return res;
+	}
+
+	@RequestMapping(value = "/${tableObjectName}", produces = "application/json; charset=utf-8", method = RequestMethod.GET)
+	public RestResult<PageList<${tableClassName}VO>> query${tableClassName}(@RequestParam(value = "page", required = false) Integer page,
+			@RequestParam(value = "pageSize", required = false) Integer pageSize,
+			@RequestParam(value = "idList", required = false) List<Long> idList) {
+		RestResult<PageList<${tableClassName}VO>> res = new RestResult<PageList<${tableClassName}VO>>();
+		try {
+			PageList<${tableClassName}VO> pgList = ${tableObjectName}Service.query${tableClassName}(page, pageSize, idList);
+			res.setData(pgList);
+			res.setState(true);
+		} catch (ServiceException e) {
+			logger.error(e.getMessage());
+			res.setErrorType(e.getErrorType());
+			res.setErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			res.setErrorType(ErrorType.UNKNOWN_ERROR);
+			res.setErrorMessage(e.getMessage());
+		}
+		return res;
+	}
+
+	@RequestMapping(value = "/${tableObjectName}", produces = "application/json; charset=utf-8", method = RequestMethod.DELETE)
+	public RestResult<String> delete${tableClassName}(@RequestParam(value = "idList", required = true) List<Long> idList) {
+		RestResult<String> res = new RestResult<String>();
+		try {
+			${tableObjectName}Service.delete${tableClassName}(idList);
+			res.setState(true);
+		} catch (ServiceException e) {
+			logger.error(e.getMessage());
+			res.setErrorType(e.getErrorType());
+			res.setErrorMessage(e.getMessage());
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			res.setErrorType(ErrorType.UNKNOWN_ERROR);
+			res.setErrorMessage(e.getMessage());
+		}
+		return res;
+	}
+
+}

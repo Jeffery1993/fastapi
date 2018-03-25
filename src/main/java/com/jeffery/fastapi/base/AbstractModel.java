@@ -61,6 +61,7 @@ public abstract class AbstractModel implements Serializable {
 		this.gmtModified = gmtModified;
 	}
 
+	@Override
 	public String toString() {
 		return JSON.toJSONString(this);
 	}

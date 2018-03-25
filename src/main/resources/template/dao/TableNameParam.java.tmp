@@ -1,8 +1,8 @@
 package ${dalPackageName}.param;
 
-import ${basePackageName}.AbstractQueryParam;
+import com.jeffery.fastapi.base.AbstractQueryParam;
 
-public class ${tableNickName}Param extends AbstractQueryParam {
+public class ${tableClassName}Param extends AbstractQueryParam {
 
 	private static final long serialVersionUID = 1L;
 	

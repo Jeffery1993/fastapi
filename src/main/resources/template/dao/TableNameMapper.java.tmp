@@ -1,9 +1,9 @@
 package ${dalPackageName}.mapper;
 
-import ${basePackageName}.Mapper;
-import ${dalPackageName}.model.${tableNickName}Model;
-import ${dalPackageName}.param.${tableNickName}Param;
+import com.jeffery.fastapi.base.Mapper;
+import ${dalPackageName}.model.${tableClassName}Model;
+import ${dalPackageName}.param.${tableClassName}Param;
 
-public interface ${tableNickName}Mapper extends Mapper<${tableNickName}Param, ${tableNickName}Model> {
+public interface ${tableClassName}Mapper extends Mapper<${tableClassName}Param, ${tableClassName}Model> {
 
 }

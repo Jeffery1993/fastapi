@@ -10,6 +10,8 @@ public abstract class AbstractQueryParam implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private static final int MAX_PAGE_SIZE = 1000;
+
 	protected Integer page = 1;
 	protected Integer pageSize = 10;
 	protected Boolean countNeeded = false;
@@ -82,6 +84,17 @@ public abstract class AbstractQueryParam implements Serializable {
 		this.gmtModified = gmtModified;
 	}
 
+	public void setPageInfo(Integer page, Integer pageSize) {
+		if (page != null && page.intValue() > 0) {
+			this.page = page;
+		}
+		if (pageSize != null && pageSize.intValue() > 0 && pageSize.intValue() < MAX_PAGE_SIZE) {
+			this.pageSize = pageSize;
+		}
+		this.countNeeded = true;
+	}
+
+	@Override
 	public String toString() {
 		return JSON.toJSONString(this);
 	}

@@ -1,4 +1,6 @@
-package com.jeffery.fastapi.exception;
+package com.jeffery.fastapi.base.exception;
+
+import com.jeffery.fastapi.base.ErrorType;
 
 public class ServiceException extends Exception {
 
@@ -18,6 +20,10 @@ public class ServiceException extends Exception {
 
 	public ServiceException(Throwable cause) {
 		super(cause);
+	}
+
+	public ErrorType getErrorType() {
+		return ErrorType.SERVICE_ERROR;
 	}
 
 }

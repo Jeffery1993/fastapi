@@ -1,0 +1,56 @@
+package ${apiPackageName}.${tablePackageName}.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.jeffery.fastapi.base.AbstractService;
+import com.jeffery.fastapi.base.PageList;
+import com.jeffery.fastapi.base.exception.ServiceException;
+import ${apiPackageName}.${tablePackageName}.model.${tableClassName}VO;
+import ${dalPackageName}.dao.${tableClassName}Dao;
+import ${dalPackageName}.model.${tableClassName}Model;
+import ${dalPackageName}.param.${tableClassName}Param;
+
+@Service
+public class ${tableClassName}Service extends AbstractService {
+
+	@Autowired
+	private ${tableClassName}Dao ${tableObjectName}Dao;
+
+	public void create${tableClassName}(List<${tableClassName}Model> ${tableObjectName}ModelList) throws ServiceException {
+		${tableObjectName}Dao.create(${tableObjectName}ModelList);
+	}
+
+	public void update${tableClassName}(List<${tableClassName}Model> ${tableObjectName}ModelList) throws ServiceException {
+		for (${tableClassName}Model ${tableObjectName}Model : ${tableObjectName}ModelList) {
+			${tableObjectName}Dao.update(${tableObjectName}Model);
+		}
+	}
+
+	public PageList<${tableClassName}VO> query${tableClassName}(Integer page, Integer pageSize, List<Long> idList) throws ServiceException {
+		PageList<${tableClassName}Model> pgList = null;
+		${tableClassName}Param param = new ${tableClassName}Param();
+		param.setPageInfo(page, pageSize);
+		if (idList != null && !idList.isEmpty()) {
+			param.setIdList(idList);
+		}
+		pgList = ${tableObjectName}Dao.query(param);
+
+		PageList<${tableClassName}VO> voList = new PageList<${tableClassName}VO>();
+		List<${tableClassName}VO> dataList = voList.getDataList();
+		for (${tableClassName}Model m : pgList.getDataList()) {
+			dataList.add(new ${tableClassName}VO(m));
+		}
+		voList.setTotalCount(pgList.getTotalCount());
+		return voList;
+	}
+
+	public void delete${tableClassName}(List<Long> idList) throws ServiceException {
+		for (Long id : idList) {
+			${tableObjectName}Dao.delete(id);
+		}
+	}
+
+}

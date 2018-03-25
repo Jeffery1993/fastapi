@@ -3,20 +3,20 @@ package ${dalPackageName}.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ${basePackageName}.DAO;
-import ${basePackageName}.Mapper;
-import ${dalPackageName}.mapper.${tableNickName}Mapper;
-import ${dalPackageName}.model.${tableNickName}Model;
-import ${dalPackageName}.param.${tableNickName}Param;
+import com.jeffery.fastapi.base.DAO;
+import com.jeffery.fastapi.base.Mapper;
+import ${dalPackageName}.mapper.${tableClassName}Mapper;
+import ${dalPackageName}.model.${tableClassName}Model;
+import ${dalPackageName}.param.${tableClassName}Param;
 
 @Service
-public class ${tableNickName}Dao extends DAO<${tableNickName}Param, ${tableNickName}Model> {
+public class ${tableClassName}Dao extends DAO<${tableClassName}Param, ${tableClassName}Model> {
 
 	@Autowired
-	private ${tableNickName}Mapper mapper;
+	private ${tableClassName}Mapper mapper;
 
 	@Override
-	public Mapper<${tableNickName}Param, ${tableNickName}Model> getMapper() {
+	public Mapper<${tableClassName}Param, ${tableClassName}Model> getMapper() {
 		return mapper;
 	}
 

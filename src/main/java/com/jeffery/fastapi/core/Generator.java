@@ -41,4 +41,15 @@ public class Generator {
 		}
 	}
 
+	public static void help() {
+		String DEMO = "package tools;\n\n" + "import java.io.File;\n" + "import java.io.IOException;\n\n"
+				+ "import com.jeffery.fastapi.core.Generator;\n"
+				+ "import com.jeffery.fastapi.core.sql.SQLResource;\n\n" + "public class Test {\n\n"
+				+ "\tpublic static void main(String[] args) throws IOException {\n"
+				+ "\t\tString path = System.getProperty(\"user.dir\") + \"/sql/car.sql\";\n"
+				+ "\t\tGenerator generator = new Generator(new SQLResource(new File(path)));\n"
+				+ "\t\tgenerator.start();\n" + "\t}\n\n" + "}\n";
+		System.out.println(DEMO);
+	}
+
 }

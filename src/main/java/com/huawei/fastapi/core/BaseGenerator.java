@@ -10,27 +10,25 @@ public class BaseGenerator extends AbstractGenerator {
 	@Override
 	public void createFiles(boolean override) throws IOException {
 		super.createFiles(override);
-		logger.info("Create basePackage successfully");
+		logger.info("*** Create basePackage successfully ***");
 	}
 
 	@Override
 	Map<String, String> getPlaceholders() {
 		Map<String, String> placeholders = new HashMap<String, String>();
 		placeholders.put("basePackageName", PathManager.BASE_PACKAGE_NAME);
-		placeholders.put("expPackageName", PathManager.EXP_PACKAGE_NAME);
-		placeholders.put("utilPackageName", PathManager.UTIL_PACKAGE_NAME);
 		return placeholders;
 	}
 
 	@Override
 	List<String> getTemplateList() throws IOException {
-		return getTemplateList("template/base");
+		return getTemplateList("template/common/base");
 	}
 
 	@Override
 	String getTargetPath(String tmpName) {
 		String fileName = getRenderedFileName(tmpName, getPlaceholders());
-		return PathManager.COMMON_PATH + fileName;
+		return PathManager.MAIN_PATH + fileName;
 	}
 
 }

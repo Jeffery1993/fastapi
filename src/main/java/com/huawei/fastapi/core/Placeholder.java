@@ -7,6 +7,7 @@ import java.util.Map;
 import com.huawei.fastapi.sql.SQLField;
 import com.huawei.fastapi.sql.SQLTable;
 import com.huawei.fastapi.util.RenderUtils;
+import com.huawei.fastapi.util.StringUtils;
 
 public class Placeholder {
 
@@ -19,8 +20,6 @@ public class Placeholder {
 		 * package name
 		 */
 		placeholders.put("basePackageName", PathManager.BASE_PACKAGE_NAME);
-		placeholders.put("expPackageName", PathManager.EXP_PACKAGE_NAME);
-		placeholders.put("utilPackageName", PathManager.UTIL_PACKAGE_NAME);
 		placeholders.put("dalPackageName", PathManager.DAL_PACKAGE_NAME);
 		placeholders.put("apiPackageName", PathManager.API_PACKAGE_NAME);
 
@@ -51,14 +50,20 @@ public class Placeholder {
 	}
 
 	private static String getPrivateFields(SQLTable table) {
-		final String template = "private ${fieldType} ${fieldObjectName};";
+		final String template1 = "private ${fieldType} ${fieldObjectName};";
+		final String template2 = "@ApiModelProperty(value = \"${fieldComment}\")" + ENTER + TAB + template1;
 		StringBuffer buffer = new StringBuffer();
 		for (Iterator<SQLField> iterator = table.getOtherFields().iterator(); iterator.hasNext();) {
 			Map<String, String> placesholders = new HashMap<String, String>();
 			SQLField field = iterator.next();
 			placesholders.put("fieldType", field.getFieldType());
-			placesholders.put("fieldObjectName", field.getLowerCamelCaseFieldName());
-			buffer.append(RenderUtils.render(template, placesholders));
+			placesholders.put("fieldObjectName", field.getFieldObjectName());
+			if (StringUtils.isEmpty(field.getFieldComment())) {
+				buffer.append(RenderUtils.render(template1, placesholders));
+			} else {
+				placesholders.put("fieldComment", field.getFieldComment());
+				buffer.append(RenderUtils.render(template2, placesholders));
+			}
 			if (iterator.hasNext()) {
 				buffer.append(ENTER + TAB);
 			}
@@ -78,8 +83,8 @@ public class Placeholder {
 			Map<String, String> placesholders = new HashMap<String, String>();
 			SQLField field = iterator.next();
 			placesholders.put("fieldType", field.getFieldType());
-			placesholders.put("fieldClassName", field.getUpperCamelCaseFieldName());
-			placesholders.put("fieldObjectName", field.getLowerCamelCaseFieldName());
+			placesholders.put("fieldClassName", field.getFieldClassName());
+			placesholders.put("fieldObjectName", field.getFieldObjectName());
 			buffer.append(RenderUtils.render(template, placesholders));
 			if (iterator.hasNext()) {
 				buffer.append(ENTER + ENTER + TAB);
@@ -94,7 +99,7 @@ public class Placeholder {
 		for (Iterator<SQLField> iterator = table.getOtherFields().iterator(); iterator.hasNext();) {
 			Map<String, String> placesholders = new HashMap<String, String>();
 			SQLField field = iterator.next();
-			placesholders.put("fieldObjectName", field.getLowerCamelCaseFieldName());
+			placesholders.put("fieldObjectName", field.getFieldObjectName());
 			placesholders.put("fieldName", field.getFieldName());
 			buffer.append(RenderUtils.render(template, placesholders));
 			if (iterator.hasNext()) {
@@ -122,7 +127,7 @@ public class Placeholder {
 		for (Iterator<SQLField> iterator = table.getOtherFields().iterator(); iterator.hasNext();) {
 			Map<String, String> placesholders = new HashMap<String, String>();
 			SQLField field = iterator.next();
-			placesholders.put("fieldObjectName", field.getLowerCamelCaseFieldName());
+			placesholders.put("fieldObjectName", field.getFieldObjectName());
 			placesholders.put("fieldName", field.getFieldName());
 			buffer.append(RenderUtils.render(template, placesholders));
 			if (iterator.hasNext()) {
@@ -138,7 +143,7 @@ public class Placeholder {
 		for (Iterator<SQLField> iterator = table.getOtherFields().iterator(); iterator.hasNext();) {
 			Map<String, String> placesholders = new HashMap<String, String>();
 			SQLField field = iterator.next();
-			placesholders.put("fieldObjectName", field.getLowerCamelCaseFieldName());
+			placesholders.put("fieldObjectName", field.getFieldObjectName());
 			buffer.append(RenderUtils.render(template, placesholders));
 			if (iterator.hasNext()) {
 				buffer.append(", ");
@@ -153,7 +158,7 @@ public class Placeholder {
 		for (Iterator<SQLField> iterator = table.getOtherFields().iterator(); iterator.hasNext();) {
 			Map<String, String> placesholders = new HashMap<String, String>();
 			SQLField field = iterator.next();
-			placesholders.put("fieldObjectName", field.getLowerCamelCaseFieldName());
+			placesholders.put("fieldObjectName", field.getFieldObjectName());
 			buffer.append(RenderUtils.render(template, placesholders));
 			if (iterator.hasNext()) {
 				buffer.append(", ");
@@ -169,7 +174,7 @@ public class Placeholder {
 		for (Iterator<SQLField> iterator = table.getOtherFields().iterator(); iterator.hasNext();) {
 			Map<String, String> placesholders = new HashMap<String, String>();
 			SQLField field = iterator.next();
-			placesholders.put("fieldObjectName", field.getLowerCamelCaseFieldName());
+			placesholders.put("fieldObjectName", field.getFieldObjectName());
 			placesholders.put("fieldName", field.getFieldName());
 			buffer.append(RenderUtils.render(template, placesholders));
 			if (iterator.hasNext()) {

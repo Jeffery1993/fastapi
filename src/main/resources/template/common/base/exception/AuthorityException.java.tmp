@@ -1,4 +1,4 @@
-package ${expPackageName};
+package ${basePackageName}.exception;
 
 import ${basePackageName}.ErrorType;
 

@@ -5,10 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ${apiPackageName}.${tablePackageName}.model.${tableClassName}VO;
+import ${apiPackageName}.${tablePackageName}.param.${tableClassName}CreateParam;
+import ${apiPackageName}.${tablePackageName}.param.${tableClassName}UpdateParam;
 import ${basePackageName}.AbstractService;
 import ${basePackageName}.PageList;
 import ${basePackageName}.exception.ServiceException;
-import ${apiPackageName}.${tablePackageName}.model.${tableClassName}VO;
 import ${dalPackageName}.dao.${tableClassName}Dao;
 import ${dalPackageName}.model.${tableClassName}Model;
 import ${dalPackageName}.param.${tableClassName}Param;
@@ -19,14 +21,12 @@ public class ${tableClassName}Service extends AbstractService {
 	@Autowired
 	private ${tableClassName}Dao ${tableObjectName}Dao;
 
-	public void create${tableClassName}(List<${tableClassName}Model> ${tableObjectName}ModelList) throws ServiceException {
-		${tableObjectName}Dao.create(${tableObjectName}ModelList);
+	public void create${tableClassName}(${tableClassName}CreateParam ${tableObjectName}CreateParam) throws ServiceException {
+		${tableObjectName}Dao.create(${tableObjectName}CreateParam.to${tableClassName}Model());
 	}
 
-	public void update${tableClassName}(List<${tableClassName}Model> ${tableObjectName}ModelList) throws ServiceException {
-		for (${tableClassName}Model ${tableObjectName}Model : ${tableObjectName}ModelList) {
-			${tableObjectName}Dao.update(${tableObjectName}Model);
-		}
+	public void update${tableClassName}(${tableClassName}UpdateParam ${tableObjectName}UpdateParam) throws ServiceException {
+		${tableObjectName}Dao.update(${tableObjectName}UpdateParam.to${tableClassName}Model());
 	}
 
 	public PageList<${tableClassName}VO> query${tableClassName}(Integer page, Integer pageSize, List<Long> idList) throws ServiceException {

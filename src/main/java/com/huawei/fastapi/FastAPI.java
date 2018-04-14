@@ -26,11 +26,23 @@ public class FastAPI {
 	private String resource;
 	private List<SQLTable> tables;
 
+	private boolean generateApi;
+
+	/**
+	 * Get resource from input stream.
+	 * 
+	 * @param is
+	 */
 	public FastAPI() {
 		this(System.in);
 		getSQLTables();
 	}
 
+	/**
+	 * Get resource from input stream.
+	 * 
+	 * @param is
+	 */
 	public FastAPI(InputStream is) {
 		Scanner scanner = new Scanner(is);
 		StringBuffer sb = new StringBuffer();
@@ -43,11 +55,21 @@ public class FastAPI {
 		getSQLTables();
 	}
 
+	/**
+	 * Get resource from string directly.
+	 * 
+	 * @param is
+	 */
 	public FastAPI(String resource) {
 		this.resource = resource;
 		getSQLTables();
 	}
 
+	/**
+	 * Get resource from SQL file.
+	 * 
+	 * @param is
+	 */
 	public FastAPI(File file) throws IOException {
 		if (file.exists()) {
 			if (file.isDirectory()) {
@@ -64,6 +86,9 @@ public class FastAPI {
 		getSQLTables();
 	}
 
+	/**
+	 * Resolve resource to SQL tables.
+	 */
 	private void getSQLTables() {
 		this.tables = SQLResolver.getSQLTables(resource);
 		if (tables.isEmpty()) {
@@ -71,29 +96,45 @@ public class FastAPI {
 		}
 	}
 
+	/**
+	 * Set it to true if API are needed.
+	 * 
+	 * @param generateApi
+	 */
+	public void setGenerateApi(boolean generateApi) {
+		this.generateApi = generateApi;
+	}
+
+	/**
+	 * Create files.
+	 * 
+	 * @param override
+	 * @throws IOException
+	 */
+	private void createFiles(boolean override) throws IOException {
+		new BaseGenerator().createFiles(false);
+		for (SQLTable table : tables) {
+			DAOGenerator daoGenerator = new DAOGenerator(table);
+			daoGenerator.createFiles(override);
+
+			if (generateApi) {
+				APIGenerator apiGenerator = new APIGenerator(table);
+				apiGenerator.createFiles(override);
+			}
+		}
+	}
+
+	/**
+	 * Start to create files.
+	 * 
+	 * @param override
+	 */
 	public void start(boolean override) {
 		try {
-			new BaseGenerator().createFiles(false);
+			createFiles(override);
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
 			System.exit(1);
-		}
-		for (SQLTable table : tables) {
-			DAOGenerator daoGenerator = new DAOGenerator(table);
-			try {
-				daoGenerator.createFiles(override);
-			} catch (IOException e) {
-				logger.error(e.getMessage(), e);
-				continue;
-			}
-
-			APIGenerator apiGenerator = new APIGenerator(table);
-			try {
-				apiGenerator.createFiles(override);
-			} catch (IOException e) {
-				logger.error(e.getMessage(), e);
-				continue;
-			}
 		}
 	}
 

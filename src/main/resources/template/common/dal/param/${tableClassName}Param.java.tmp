@@ -2,6 +2,8 @@ package ${dalPackageName}.param;
 
 import ${basePackageName}.AbstractQueryParam;
 
+import io.swagger.annotations.ApiModelProperty;
+
 public class ${tableClassName}Param extends AbstractQueryParam {
 
 	private static final long serialVersionUID = 1L;

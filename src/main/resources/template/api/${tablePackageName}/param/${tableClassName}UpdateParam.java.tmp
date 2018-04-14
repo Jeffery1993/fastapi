@@ -1,0 +1,34 @@
+package ${apiPackageName}.${tablePackageName}.param;
+
+import org.springframework.beans.BeanUtils;
+
+import ${basePackageName}.exception.ParamException;
+import ${dalPackageName}.model.${tableClassName}Model;
+
+import io.swagger.annotations.ApiModelProperty;
+
+public class ${tableClassName}UpdateParam {
+
+	private Long id;
+	${privateFields}
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	${publicMethods}
+	
+	public ${tableClassName}Model to${tableClassName}Model() throws ParamException {
+		if (id == null) {
+			throw new ParamException("id cannot be null");
+		}
+		${tableClassName}Model m = new ${tableClassName}Model();
+		BeanUtils.copyProperties(this, m);
+		return m;
+	}
+
+}

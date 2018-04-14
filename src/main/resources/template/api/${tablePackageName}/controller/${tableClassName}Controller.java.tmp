@@ -9,14 +9,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ${apiPackageName}.${tablePackageName}.model.${tableClassName}VO;
+import ${apiPackageName}.${tablePackageName}.param.${tableClassName}CreateParam;
+import ${apiPackageName}.${tablePackageName}.param.${tableClassName}UpdateParam;
+import ${apiPackageName}.${tablePackageName}.service.${tableClassName}Service;
 import ${basePackageName}.AbstractController;
 import ${basePackageName}.ErrorType;
 import ${basePackageName}.PageList;
 import ${basePackageName}.RestResult;
 import ${basePackageName}.exception.ServiceException;
-import ${apiPackageName}.${tablePackageName}.model.${tableClassName}VO;
-import ${apiPackageName}.${tablePackageName}.service.${tableClassName}Service;
-import ${dalPackageName}.model.${tableClassName}Model;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -26,10 +27,10 @@ public class ${tableClassName}Controller extends AbstractController {
 	private ${tableClassName}Service ${tableObjectName}Service;
 
 	@RequestMapping(value = "/${tableObjectName}", produces = "application/json; charset=utf-8", method = RequestMethod.POST)
-	public RestResult<String> create${tableClassName}(@RequestBody List<${tableClassName}Model> ${tableObjectName}ModelList) {
+	public RestResult<String> create${tableClassName}(@RequestBody ${tableClassName}CreateParam ${tableObjectName}CreateParam) {
 		RestResult<String> res = new RestResult<String>();
 		try {
-			${tableObjectName}Service.create${tableClassName}(${tableObjectName}ModelList);
+			${tableObjectName}Service.create${tableClassName}(${tableObjectName}CreateParam);
 			res.setState(true);
 		} catch (ServiceException e) {
 			logger.error(e.getMessage());
@@ -44,10 +45,10 @@ public class ${tableClassName}Controller extends AbstractController {
 	}
 
 	@RequestMapping(value = "/${tableObjectName}", produces = "application/json; charset=utf-8", method = RequestMethod.PUT)
-	public RestResult<String> update${tableClassName}(@RequestBody List<${tableClassName}Model> ${tableObjectName}ModelList) {
+	public RestResult<String> update${tableClassName}(@RequestBody ${tableClassName}UpdateParam ${tableObjectName}UpdateParam) {
 		RestResult<String> res = new RestResult<String>();
 		try {
-			${tableObjectName}Service.update${tableClassName}(${tableObjectName}ModelList);
+			${tableObjectName}Service.update${tableClassName}(${tableObjectName}UpdateParam);
 			res.setState(true);
 		} catch (ServiceException e) {
 			logger.error(e.getMessage());

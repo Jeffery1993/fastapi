@@ -3,8 +3,10 @@ package ${apiPackageName}.${tablePackageName}.model;
 import org.springframework.beans.BeanUtils;
 
 import ${basePackageName}.AbstractVO;
-import ${utilPackageName}.DateUtils;
+import ${basePackageName}.util.DateUtils;
 import ${dalPackageName}.model.${tableClassName}Model;
+
+import io.swagger.annotations.ApiModelProperty;
 
 public class ${tableClassName}VO extends AbstractVO {
 

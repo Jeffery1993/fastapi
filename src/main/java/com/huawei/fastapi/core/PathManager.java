@@ -43,10 +43,7 @@ public class PathManager {
 	 * Get package name of target directory.
 	 */
 	private static final String BASE_DIR = "common.base";
-	private static final String EXP_DIR = "common.base.exception";
-	private static final String UTIL_DIR = "common.base.util";
 	private static final String DAL_DIR = "common.dal";
-	private static final String COMMON_DIR = "common";
 	private static final String API_DIR = "api";
 	private static final String XML_DIR = "mapper";
 
@@ -54,10 +51,7 @@ public class PathManager {
 	 * Package name of target directory.
 	 */
 	public static final String BASE_PACKAGE_NAME = GROUP_ARTIFACT_ID + "." + BASE_DIR;
-	public static final String EXP_PACKAGE_NAME = GROUP_ARTIFACT_ID + "." + EXP_DIR;
-	public static final String UTIL_PACKAGE_NAME = GROUP_ARTIFACT_ID + "." + UTIL_DIR;
 	public static final String DAL_PACKAGE_NAME = GROUP_ARTIFACT_ID + "." + DAL_DIR;
-	public static final String COMMON_PACKAGE_NAME = GROUP_ARTIFACT_ID + "." + COMMON_DIR;
 	public static final String API_PACKAGE_NAME = GROUP_ARTIFACT_ID + "." + API_DIR;
 
 	/*
@@ -66,18 +60,13 @@ public class PathManager {
 	private static final String ROOT_DIR = System.getProperty("user.dir");
 	private static final String MAIN_DIR = "\\src\\main\\java";
 	private static final String RES_DIR = "\\src\\main\\resources";
-	public static final String MAIN_PATH = ROOT_DIR + MAIN_DIR + "\\" + GROUP_ARTIFACT_ID.replaceAll("\\.", "\\\\");
-	public static final String RES_PATH = ROOT_DIR + RES_DIR;
+	private static final String GROUP_ARTIFACT_DIR = GROUP_ARTIFACT_ID.replaceAll("\\.", "\\\\");
 
 	/*
 	 * Absolute path of target directory.
 	 */
-	public static final String BASE_PATH = MAIN_PATH + "\\" + BASE_DIR.replaceAll("\\.", "\\\\");
-	public static final String EXP_PATH = MAIN_PATH + "\\" + EXP_DIR.replaceAll("\\.", "\\\\");
-	public static final String UTIL_PATH = MAIN_PATH + "\\" + UTIL_DIR.replaceAll("\\.", "\\\\");
-	public static final String DAL_PATH = MAIN_PATH + "\\" + DAL_DIR.replaceAll("\\.", "\\\\");
-	public static final String COMMON_PATH = MAIN_PATH + "\\" + COMMON_DIR + "\\";
-	public static final String API_PATH = MAIN_PATH + "\\" + API_DIR + "\\";
-	public static final String XML_PATH = RES_PATH + "\\" + XML_DIR + "\\";
+	public static final String MAIN_PATH = ROOT_DIR + MAIN_DIR + "\\" + GROUP_ARTIFACT_DIR + "\\";
+	public static final String RES_PATH = ROOT_DIR + RES_DIR + "\\";
+	public static final String XML_PATH = RES_PATH + XML_DIR + "\\";
 
 }

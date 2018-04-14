@@ -37,7 +37,7 @@ public class SQLField {
 	 * 
 	 * @return
 	 */
-	public String getUpperCamelCaseFieldName() {
+	public String getFieldClassName() {
 		String[] slices = fieldName.toLowerCase().split("[^A-Za-z]");
 		StringBuffer sb = new StringBuffer();
 		for (String slice : slices) {
@@ -53,8 +53,8 @@ public class SQLField {
 	 * 
 	 * @return
 	 */
-	public String getLowerCamelCaseFieldName() {
-		return StringUtils.decapitalize(getUpperCamelCaseFieldName());
+	public String getFieldObjectName() {
+		return StringUtils.decapitalize(getFieldClassName());
 	}
 
 	@Override

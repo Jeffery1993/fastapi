@@ -15,7 +15,7 @@ public class DAOGenerator extends AbstractGenerator {
 	@Override
 	public void createFiles(boolean override) throws IOException {
 		super.createFiles(override);
-		logger.info("Create DAO for '" + table.getTableName() + "'successfully");
+		logger.info("*** Create DAO for '" + table.getTableName() + "'successfully ***");
 	}
 
 	@Override
@@ -25,7 +25,7 @@ public class DAOGenerator extends AbstractGenerator {
 
 	@Override
 	List<String> getTemplateList() throws IOException {
-		return getTemplateList("template/dal");
+		return getTemplateList("template/common/dal");
 	}
 
 	@Override
@@ -34,7 +34,7 @@ public class DAOGenerator extends AbstractGenerator {
 		if (fileName.endsWith(".xml")) {
 			return PathManager.XML_PATH + fileName.replaceAll(".*/", "");
 		} else {
-			return PathManager.COMMON_PATH + fileName;
+			return PathManager.MAIN_PATH + fileName;
 		}
 	}
 

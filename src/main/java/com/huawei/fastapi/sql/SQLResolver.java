@@ -12,36 +12,58 @@ public class SQLResolver {
 
 	private static final Logger logger = LoggerFactory.getLogger(SQLResolver.class);
 
-	private static final String MATCH_CREATE_TABLE_SCRIPT = "CREATE TABLE.*?`(.*?)`(.*)ENGINE=.*?DEFAULT CHARSET=.*?;";
-	private static final String MATCH_FIELD_AND_TYPE = "`(\\w+)`\\W(\\w+)\\W";
+	private static final String MATCH_CREATE_TABLE_SCRIPT = "CREATE TABLE.*?`(.*?)` \\((.*?)PRIMARY KEY \\(`id`\\).*?\\) ENGINE=.*?DEFAULT CHARSET=.*?;";
+	private static final String MATCH_FIELD_AND_TYPE = "`(\\w+)`\\W(\\w+).*?(COMMENT '(.*?)')?,";
 
+	/**
+	 * Get SQL tables by resolving scripts.
+	 * 
+	 * @param sqlScript
+	 * @return
+	 */
 	public static List<SQLTable> getSQLTables(String sqlScript) {
-		logger.info("Start to resolve SQL script");
+		logger.info("*** Start to resolve SQL script ***");
 		List<String> createTableScripts = getCreateTableScripts(sqlScript);
 		List<SQLTable> list = new ArrayList<SQLTable>();
 		for (String createTableScript : createTableScripts) {
 			logger.info("CreateTableScript: " + createTableScript);
 			String tableName = getTableName(createTableScript);
-			logger.info("TableName: " + tableName);
 			List<SQLField> fields = getFields(createTableScript);
-			for (SQLField field : fields) {
-				logger.info(field.getFieldName() + " [ " + field.getFieldType() + " ] ");
-			}
-			list.add(new SQLTable(tableName, fields));
-			logger.info(fields.size() + " columns in total");
+			SQLTable sqlTable = new SQLTable(tableName, fields);
+			logger.info("Resolved table: " + sqlTable);
+			sqlTable.checkFields();
+			list.add(sqlTable);
 		}
-		logger.info("SQL script resolving completed");
+		logger.info("*** SQL script resolving completed ***");
 		return list;
 	}
 
+	/**
+	 * Get list of CREATE TABLE scripts.
+	 * 
+	 * @param sqlScript
+	 * @return
+	 */
 	protected static List<String> getCreateTableScripts(String sqlScript) {
 		return RegexUtils.matchAndFindAll(sqlScript.replaceAll("[\\r\\n]", ""), MATCH_CREATE_TABLE_SCRIPT);
 	}
 
+	/**
+	 * Get table name of a single script.
+	 * 
+	 * @param createTableScript
+	 * @return
+	 */
 	protected static String getTableName(String createTableScript) {
 		return RegexUtils.matchAndFindOnce(createTableScript, MATCH_CREATE_TABLE_SCRIPT, 1);
 	}
 
+	/**
+	 * Get fields of a single script.
+	 * 
+	 * @param createTableScript
+	 * @return
+	 */
 	protected static List<SQLField> getFields(String createTableScript) {
 		String content = RegexUtils.matchAndFindOnce(createTableScript, MATCH_CREATE_TABLE_SCRIPT, 2);
 		List<String> fields = RegexUtils.matchAndFindAll(content, MATCH_FIELD_AND_TYPE, 0);
@@ -49,9 +71,11 @@ public class SQLResolver {
 		for (String field : fields) {
 			String fieldName = RegexUtils.matchAndFindOnce(field, MATCH_FIELD_AND_TYPE, 1);
 			String fieldType = RegexUtils.matchAndFindOnce(field, MATCH_FIELD_AND_TYPE, 2);
+			String fieldComment = RegexUtils.matchAndFindOnce(field, MATCH_FIELD_AND_TYPE, 4);
 			SQLField sqlField = new SQLField();
 			sqlField.setFieldName(fieldName);
 			sqlField.setFieldType(SQLType.toJavaType(fieldType));
+			sqlField.setFieldComment(fieldComment);
 			sqlFields.add(sqlField);
 		}
 		return sqlFields;

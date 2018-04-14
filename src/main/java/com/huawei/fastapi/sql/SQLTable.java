@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.huawei.fastapi.core.Placeholder;
+import com.huawei.fastapi.exception.IllegalTableException;
 import com.huawei.fastapi.util.StringUtils;
 
 public class SQLTable {
@@ -18,7 +19,6 @@ public class SQLTable {
 	public SQLTable(String tableName, List<SQLField> fields) {
 		this.tableName = tableName;
 		this.fields = fields;
-		this.placeholders = Placeholder.getPlaceholders(this);
 	}
 
 	public String getTableName() {
@@ -100,6 +100,21 @@ public class SQLTable {
 	}
 
 	/**
+	 * Check if contains id, gmt_create and gmt_modified.
+	 */
+	public void checkFields() throws IllegalTableException {
+		if (getFieldByName("id") == null) {
+			throw new IllegalTableException("Table must contain id");
+		}
+		if (getFieldByName("gmt_create") == null) {
+			throw new IllegalTableException("Table must contain gmt_create");
+		}
+		if (getFieldByName("gmt_modified") == null) {
+			throw new IllegalTableException("Table must contain gmt_modified");
+		}
+	}
+
+	/**
 	 * Get other fields except id, gmt_create and gmt_modified.
 	 * 
 	 * @return
@@ -122,16 +137,19 @@ public class SQLTable {
 	 * @return
 	 */
 	public Map<String, String> getPlaceholders() {
+		if (placeholders == null) {
+			placeholders = Placeholder.getPlaceholders(this);
+		}
 		return placeholders;
 	}
 
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("TableName: " + tableName);
+		sb.append("TableName [" + tableName + "]");
 		sb.append(System.lineSeparator());
 		for (int i = 0; i < fields.size(); i++) {
-			sb.append("field " + (i + 1) + ": " + fields.get(i).toString());
+			sb.append("Field " + (i + 1) + ": " + fields.get(i).toString());
 			if (i != fields.size() - 1) {
 				sb.append(System.lineSeparator());
 			}

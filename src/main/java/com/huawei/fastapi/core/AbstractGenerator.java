@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -48,8 +49,10 @@ public abstract class AbstractGenerator {
 	 * @throws IOException
 	 */
 	List<String> getTemplateList(String prefix) throws IOException {
-		JarFile localJarFile = new JarFile(new File("F:/Folder/MySourceFile/Java/fastapi/target/fastapi-2.1.jar"));
-		Enumeration<JarEntry> entries = localJarFile.entries();
+		URL fileURL = this.getClass().getResource("/template");
+		String jarFileName = fileURL.getFile().replace("file:/", "").replace("!/template", "");
+		JarFile jarFile = new JarFile(new File(jarFileName));
+		Enumeration<JarEntry> entries = jarFile.entries();
 		List<String> list = new ArrayList<String>();
 		while (entries.hasMoreElements()) {
 			JarEntry jarEntry = entries.nextElement();
@@ -58,7 +61,7 @@ public abstract class AbstractGenerator {
 				list.add("/" + fileName);
 			}
 		}
-		localJarFile.close();
+		jarFile.close();
 		return list;
 	}
 
@@ -87,7 +90,7 @@ public abstract class AbstractGenerator {
 			if (file.exists()) {
 				logger.info("File already exists: " + file.getName());
 				if (!override) {
-					return;
+					continue;
 				}
 			}
 			String content = getRenderedContent(tmpName, getPlaceholders());

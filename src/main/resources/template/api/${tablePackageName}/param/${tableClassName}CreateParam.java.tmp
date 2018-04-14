@@ -1,0 +1,22 @@
+package ${apiPackageName}.${tablePackageName}.param;
+
+import org.springframework.beans.BeanUtils;
+
+import ${basePackageName}.exception.ParamException;
+import ${dalPackageName}.model.${tableClassName}Model;
+
+import io.swagger.annotations.ApiModelProperty;
+
+public class ${tableClassName}CreateParam {
+
+	${privateFields}
+
+	${publicMethods}
+	
+	public ${tableClassName}Model to${tableClassName}Model() throws ParamException {
+		${tableClassName}Model m = new ${tableClassName}Model();
+		BeanUtils.copyProperties(this, m);
+		return m;
+	}
+
+}

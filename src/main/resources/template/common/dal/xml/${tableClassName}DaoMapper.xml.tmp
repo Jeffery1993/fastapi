@@ -62,7 +62,7 @@
 	<insert id="create" useGeneratedKeys="true" keyProperty="id" parameterType="${dalPackageName}.model.${tableClassName}Model" >
 		<![CDATA[
 			INSERT INTO ${tableRealName}(gmt_create, gmt_modified, ${columns})
-			VALUES(now(), now(), #{name}, #{email}, ${createStatements})
+			VALUES(now(), now(), ${createStatements})
 		]]>
 	</insert>
 	

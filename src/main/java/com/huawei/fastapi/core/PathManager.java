@@ -66,6 +66,9 @@ public class PathManager {
 	 * Absolute path of target directory.
 	 */
 	public static final String MAIN_PATH = ROOT_DIR + MAIN_DIR + "\\" + GROUP_ARTIFACT_DIR + "\\";
+	public static final String BASE_PATH = MAIN_PATH + BASE_DIR.replaceAll("\\.", "\\\\") + "\\";
+	public static final String DAL_PATH = MAIN_PATH + DAL_DIR.replaceAll("\\.", "\\\\") + "\\";
+	public static final String API_PATH = MAIN_PATH + API_DIR + "\\";
 	public static final String RES_PATH = ROOT_DIR + RES_DIR + "\\";
 	public static final String XML_PATH = RES_PATH + XML_DIR + "\\";
 

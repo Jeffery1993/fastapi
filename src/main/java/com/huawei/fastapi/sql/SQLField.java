@@ -1,5 +1,6 @@
 package com.huawei.fastapi.sql;
 
+import com.huawei.fastapi.sql.SQLType.JavaType;
 import com.huawei.fastapi.util.StringUtils;
 
 public class SQLField {
@@ -7,6 +8,26 @@ public class SQLField {
 	private String fieldName;
 	private String fieldType;
 	private String fieldComment;
+
+	public SQLField() {
+
+	}
+
+	public SQLField(String fieldName) {
+		this.fieldName = fieldName;
+		this.fieldType = JavaType.STRING.getValue();
+	}
+
+	public SQLField(String fieldName, String fieldType) {
+		this.fieldName = fieldName;
+		this.fieldType = fieldType;
+	}
+
+	public SQLField(String fieldName, String fieldType, String fieldComment) {
+		this.fieldName = fieldName;
+		this.fieldType = fieldType;
+		this.fieldComment = fieldComment;
+	}
 
 	public String getFieldName() {
 		return fieldName;

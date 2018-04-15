@@ -27,6 +27,45 @@ public abstract class AbstractGenerator {
 	protected SQLTable table;
 
 	/**
+	 * Create files.
+	 * 
+	 * @param override
+	 * @return
+	 * @throws IOException
+	 */
+	public boolean createFiles(boolean override) throws IOException {
+		boolean flag = false;
+		for (String tmpName : getTemplateList()) {
+			String targetPath = getTargetPath(tmpName);
+			String content = getRenderedContent(tmpName, getPlaceholders());
+
+			File file = new File(targetPath);
+			File parent = file.getParentFile();
+			if (!parent.exists()) {
+				parent.mkdirs();
+				logger.info("Create directory: " + parent.getAbsolutePath());
+			}
+			if (!file.exists()) {
+				flag = true;
+				FileUtils.writeStringToFile(file, content);
+				logger.info("Create file: " + file.getAbsolutePath().replaceAll(".*\\\\", ""));
+			} else {
+				if (this.getClass().equals(BaseGenerator.class)) {
+					continue;
+				} else {
+					String exist = FileUtils.readFileToString(file);
+					if (override && !exist.equals(content)) {
+						flag = true;
+						FileUtils.writeStringToFile(file, content);
+						logger.info("Override file: " + file.getAbsolutePath().replaceAll(".*\\\\", ""));
+					}
+				}
+			}
+		}
+		return flag;
+	}
+
+	/**
 	 * Get placeholder.
 	 * 
 	 * @return
@@ -72,32 +111,6 @@ public abstract class AbstractGenerator {
 	 * @return
 	 */
 	abstract String getTargetPath(String tmpName);
-
-	/**
-	 * Create files.
-	 * 
-	 * @throws IOException
-	 */
-	public void createFiles(boolean override) throws IOException {
-		for (String tmpName : getTemplateList()) {
-			String targetPath = getTargetPath(tmpName);
-			File file = new File(targetPath);
-			File parent = file.getParentFile();
-			if (!parent.exists()) {
-				parent.mkdirs();
-				logger.info("Create directory: " + parent.getAbsolutePath());
-			}
-			if (file.exists()) {
-				logger.info("File already exists: " + file.getName());
-				if (!override) {
-					continue;
-				}
-			}
-			String content = getRenderedContent(tmpName, getPlaceholders());
-			FileUtils.writeStringToFile(file, content);
-			logger.info("Create file: " + file.getAbsolutePath());
-		}
-	}
 
 	/**
 	 * Get rendered content.

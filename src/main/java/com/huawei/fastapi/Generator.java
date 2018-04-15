@@ -19,9 +19,9 @@ import com.huawei.fastapi.sql.SQLResolver;
 import com.huawei.fastapi.sql.SQLTable;
 import com.huawei.fastapi.util.StringUtils;
 
-public class FastAPI {
+public class Generator {
 
-	private static final Logger logger = LoggerFactory.getLogger(FastAPI.class);
+	private static final Logger logger = LoggerFactory.getLogger(Generator.class);
 
 	private String resource;
 	private List<SQLTable> tables;
@@ -30,10 +30,8 @@ public class FastAPI {
 
 	/**
 	 * Get resource from input stream.
-	 * 
-	 * @param is
 	 */
-	public FastAPI() {
+	public Generator() {
 		this(System.in);
 		getSQLTables();
 	}
@@ -43,7 +41,7 @@ public class FastAPI {
 	 * 
 	 * @param is
 	 */
-	public FastAPI(InputStream is) {
+	public Generator(InputStream is) {
 		Scanner scanner = new Scanner(is);
 		StringBuffer sb = new StringBuffer();
 		String line = null;
@@ -58,19 +56,20 @@ public class FastAPI {
 	/**
 	 * Get resource from string directly.
 	 * 
-	 * @param is
+	 * @param resource
 	 */
-	public FastAPI(String resource) {
+	public Generator(String resource) {
 		this.resource = resource;
 		getSQLTables();
 	}
 
 	/**
-	 * Get resource from SQL file.
+	 * Get resource from SQL file
 	 * 
-	 * @param is
+	 * @param file
+	 * @throws IOException
 	 */
-	public FastAPI(File file) throws IOException {
+	public Generator(File file) throws IOException {
 		if (file.exists()) {
 			if (file.isDirectory()) {
 				throw new IOException("File '" + file + "' exists but is a directory");
@@ -109,29 +108,19 @@ public class FastAPI {
 	 * Create files.
 	 * 
 	 * @param override
-	 * @throws IOException
 	 */
-	private void createFiles(boolean override) throws IOException {
-		new BaseGenerator().createFiles(false);
-		for (SQLTable table : tables) {
-			DAOGenerator daoGenerator = new DAOGenerator(table);
-			daoGenerator.createFiles(override);
-
-			if (generateApi) {
-				APIGenerator apiGenerator = new APIGenerator(table);
-				apiGenerator.createFiles(override);
-			}
-		}
-	}
-
-	/**
-	 * Start to create files.
-	 * 
-	 * @param override
-	 */
-	public void start(boolean override) {
+	public void createFiles(boolean override) {
 		try {
-			createFiles(override);
+			new BaseGenerator().createFiles(false);
+			for (SQLTable table : tables) {
+				DAOGenerator daoGenerator = new DAOGenerator(table);
+				daoGenerator.createFiles(override);
+
+				if (generateApi) {
+					APIGenerator apiGenerator = new APIGenerator(table);
+					apiGenerator.createFiles(override);
+				}
+			}
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
 			System.exit(1);

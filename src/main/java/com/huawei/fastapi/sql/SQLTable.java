@@ -16,6 +16,14 @@ public class SQLTable {
 	private List<SQLField> fields;
 	private Map<String, String> placeholders;
 
+	public SQLTable() {
+
+	}
+
+	public SQLTable(String tableName) {
+		this.tableName = tableName;
+	}
+
 	public SQLTable(String tableName, List<SQLField> fields) {
 		this.tableName = tableName;
 		this.fields = fields;
@@ -35,6 +43,30 @@ public class SQLTable {
 
 	public void setFields(List<SQLField> fields) {
 		this.fields = fields;
+	}
+
+	/**
+	 * Add field.
+	 * 
+	 * @param field
+	 */
+	public void addField(SQLField field) {
+		if (this.fields == null) {
+			this.fields = new ArrayList<SQLField>();
+		}
+		this.fields.add(field);
+	}
+
+	/**
+	 * Add fields.
+	 * 
+	 * @param fields
+	 */
+	public void addFields(List<SQLField> fields) {
+		if (this.fields == null) {
+			this.fields = new ArrayList<SQLField>();
+		}
+		this.fields.addAll(fields);
 	}
 
 	/**

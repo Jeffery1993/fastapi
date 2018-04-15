@@ -12,7 +12,7 @@ import com.huawei.fastapi.util.StringUtils;
 public class Placeholder {
 
 	public static final String TAB = "\t";
-	public static final String ENTER = "\n";
+	public static final String ENTER = "\r\n";
 
 	public static Map<String, String> getPlaceholders(SQLTable table) {
 		Map<String, String> placeholders = new HashMap<String, String>();
@@ -49,7 +49,7 @@ public class Placeholder {
 		return placeholders;
 	}
 
-	private static String getPrivateFields(SQLTable table) {
+	static String getPrivateFields(SQLTable table) {
 		final String template1 = "private ${fieldType} ${fieldObjectName};";
 		final String template2 = "@ApiModelProperty(value = \"${fieldComment}\")" + ENTER + TAB + template1;
 		StringBuffer buffer = new StringBuffer();
@@ -72,7 +72,7 @@ public class Placeholder {
 
 	}
 
-	private static String getPublicMethods(SQLTable table) {
+	static String getPublicMethods(SQLTable table) {
 		final String template = "public ${fieldType} get${fieldClassName}() {" + ENTER + TAB + TAB
 				+ "return ${fieldObjectName};" + ENTER + TAB + "}" + ENTER + ENTER + TAB
 				+ "public void set${fieldClassName}(${fieldType} ${fieldObjectName}) {" + ENTER + TAB + TAB
@@ -93,7 +93,7 @@ public class Placeholder {
 		return buffer.toString();
 	}
 
-	private static String getColumnsAndProperties(SQLTable table) {
+	static String getColumnsAndProperties(SQLTable table) {
 		final String template = "<result column=\"${fieldName}\" property=\"${fieldObjectName}\" />";
 		StringBuffer buffer = new StringBuffer();
 		for (Iterator<SQLField> iterator = table.getOtherFields().iterator(); iterator.hasNext();) {
@@ -109,7 +109,7 @@ public class Placeholder {
 		return buffer.toString();
 	}
 
-	private static String getColumns(SQLTable table) {
+	static String getColumns(SQLTable table) {
 		StringBuffer buffer = new StringBuffer();
 		for (Iterator<SQLField> iterator = table.getOtherFields().iterator(); iterator.hasNext();) {
 			SQLField field = iterator.next();
@@ -121,7 +121,7 @@ public class Placeholder {
 		return buffer.toString();
 	}
 
-	private static String getSqlWhereStatements(SQLTable table) {
+	static String getSqlWhereStatements(SQLTable table) {
 		final String template = "<if test=\"${fieldObjectName} != null\"> AND ${fieldName} = #{${fieldObjectName}} </if>";
 		StringBuffer buffer = new StringBuffer();
 		for (Iterator<SQLField> iterator = table.getOtherFields().iterator(); iterator.hasNext();) {
@@ -137,7 +137,7 @@ public class Placeholder {
 		return buffer.toString();
 	}
 
-	private static String getCreateStatements(SQLTable table) {
+	static String getCreateStatements(SQLTable table) {
 		final String template = "#{${fieldObjectName}}";
 		StringBuffer buffer = new StringBuffer();
 		for (Iterator<SQLField> iterator = table.getOtherFields().iterator(); iterator.hasNext();) {
@@ -152,7 +152,7 @@ public class Placeholder {
 		return buffer.toString();
 	}
 
-	private static String getBatchCreateStatements(SQLTable table) {
+	static String getBatchCreateStatements(SQLTable table) {
 		final String template = "#{item.${fieldObjectName}}";
 		StringBuffer buffer = new StringBuffer();
 		for (Iterator<SQLField> iterator = table.getOtherFields().iterator(); iterator.hasNext();) {
@@ -167,7 +167,7 @@ public class Placeholder {
 		return buffer.toString();
 	}
 
-	private static String getUpdateStatements(SQLTable table) {
+	static String getUpdateStatements(SQLTable table) {
 		final String template = "<if test=\"${fieldObjectName} != null\">" + ENTER + TAB + TAB + TAB
 				+ ", ${fieldName} = #{this.${fieldObjectName}}" + ENTER + TAB + TAB + "</if>";
 		StringBuffer buffer = new StringBuffer();

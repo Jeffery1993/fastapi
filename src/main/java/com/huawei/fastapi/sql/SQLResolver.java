@@ -29,10 +29,10 @@ public class SQLResolver {
 			logger.info("CreateTableScript: " + createTableScript);
 			String tableName = getTableName(createTableScript);
 			List<SQLField> fields = getFields(createTableScript);
-			SQLTable sqlTable = new SQLTable(tableName, fields);
-			logger.info("Resolved table: " + sqlTable);
-			sqlTable.checkFields();
-			list.add(sqlTable);
+			SQLTable table = new SQLTable(tableName, fields);
+			logger.info("Resolved table: " + table);
+			table.checkFields();
+			list.add(table);
 		}
 		logger.info("*** SQL script resolving completed ***");
 		return list;

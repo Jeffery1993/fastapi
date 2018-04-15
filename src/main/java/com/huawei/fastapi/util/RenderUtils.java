@@ -17,9 +17,27 @@ public class RenderUtils {
 		while (m.find()) {
 			String placeholder = placeholders.get(m.group(1));
 			if (StringUtils.isEmpty(placeholder)) {
-				throw new NoSuchPlaceholderException("No such placeholder " + m.group(1));
+				throw new NoSuchPlaceholderException("No such placeholder: " + m.group(1));
 			}
 			m.appendReplacement(buffer, placeholder);
+		}
+		m.appendTail(buffer);
+		return buffer.toString();
+	}
+
+	public static String render(String regex, String str, String placeholder) throws NoSuchPlaceholderException {
+		Pattern p = Pattern.compile(regex);
+		Matcher m = p.matcher(str);
+		StringBuffer buffer = new StringBuffer();
+		if (m.find()) {
+			String appended = m.group(1) + placeholder + m.group(3);
+			m.appendReplacement(buffer, appended);
+		} else {
+			throw new NoSuchPlaceholderException("Placeholder not found for: " + regex);
+		}
+		while (m.find()) {
+			String appended = m.group(1) + placeholder + m.group(3);
+			m.appendReplacement(buffer, appended);
 		}
 		m.appendTail(buffer);
 		return buffer.toString();

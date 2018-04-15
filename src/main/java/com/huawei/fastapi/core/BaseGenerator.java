@@ -8,9 +8,12 @@ import java.util.Map;
 public class BaseGenerator extends AbstractGenerator {
 
 	@Override
-	public void createFiles(boolean override) throws IOException {
-		super.createFiles(override);
-		logger.info("*** Create basePackage successfully ***");
+	public boolean createFiles(boolean override) throws IOException {
+		boolean flag = super.createFiles(override);
+		if (flag) {
+			logger.info("*** Create basePackage successfully ***");
+		}
+		return flag;
 	}
 
 	@Override

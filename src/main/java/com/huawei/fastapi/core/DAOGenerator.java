@@ -13,9 +13,14 @@ public class DAOGenerator extends AbstractGenerator {
 	}
 
 	@Override
-	public void createFiles(boolean override) throws IOException {
-		super.createFiles(override);
-		logger.info("*** Create DAO for '" + table.getTableName() + "'successfully ***");
+	public boolean createFiles(boolean override) throws IOException {
+		boolean flag = super.createFiles(override);
+		if (flag) {
+			logger.info("*** Create DAO for '" + table.getTableName() + "'successfully ***");
+		} else {
+			logger.info("*** No DAO changes detected for '" + table.getTableName() + "' ***");
+		}
+		return flag;
 	}
 
 	@Override
